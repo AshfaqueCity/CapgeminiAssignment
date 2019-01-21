@@ -6,14 +6,33 @@ using System.Threading.Tasks;
 
 namespace StringCalculator
 {
-    public class Calculator
+    public sealed class Calculator
     {
+        private static readonly Calculator CalculatorInstance = new Calculator();
+        private Calculator()
+        { 
+        }
+        public static Calculator _CalculatorInstance
+        {
+            get 
+            {
+                return CalculatorInstance;
+            }
+        }
         public int Add(string inputNumbers)
         {
-            int returnval = 0;
-            if (inputNumbers == string.Empty)
-                 returnval = 0;
-            return returnval;
+            try
+            {
+                int returnval = 0;
+                if (inputNumbers == string.Empty)
+                    returnval = 0;
+                return returnval;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
     }
 }

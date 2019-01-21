@@ -10,11 +10,30 @@ namespace StringCalculatorTest
         /// Below Test is for Testing Empty string which should Add as return 0
         /// </summary>
         [TestMethod]
-        public void Calculator_WithEmptyStringReturn0()
+        [DataRow("", 0)]
+        public void Calculator_WithEmptyStringReturn0(string inputstring, int expected)
         {
-            StringCalculator.Calculator _objCalculator = new StringCalculator.Calculator();
-            var Result = _objCalculator.Add("");
-            Assert.AreEqual(0, Result);
+            checkAssertCalculator(inputstring, expected);
+        }
+
+        /// <summary>
+        /// Below Test is for Testing Single number which return same number
+        /// for DataRow, install the NuGet packages MSTest.TestFramework and MSTest.TestAdapter and
+        /// Remove Microsoft.VisualStudio.QualityTools.UnitTestFramework from references of the project
+        /// </summary>
+        [TestMethod]
+        [DataRow("5", 5)]
+        [DataRow("10", 10)]
+        public void Calculator_WithOneNumberReturnSameNumner(string inputstring, int expected)
+        {
+            checkAssertCalculator(inputstring, expected);
+        }
+
+        public void checkAssertCalculator(string inputstring, int expected)
+        {
+            var _objCalculator = StringCalculator.Calculator._CalculatorInstance; ;
+            var Result = _objCalculator.Add(inputstring);
+            Assert.AreEqual(expected, Result);
         }
     }
 }
