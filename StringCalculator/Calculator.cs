@@ -19,14 +19,15 @@ namespace StringCalculator
                 return CalculatorInstance;
             }
         }
+
+        private const int returnval = 0;
         public int Add(string inputNumbers)
         {
             try
             {
-                int returnval = 0;
                 if (inputNumbers == string.Empty)
-                    returnval = 0;
-                return returnval;
+                    return returnval;
+                return Convert.ToInt32(inputNumbers);
             }
             catch (Exception ex)
             {
