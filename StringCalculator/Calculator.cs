@@ -8,6 +8,8 @@ namespace StringCalculator
 {
     public sealed class Calculator
     {
+        #region Class Instance Members(Singleton)
+        private const int returnval = 0;
         private static readonly Calculator CalculatorInstance = new Calculator();
         private Calculator()
         { 
@@ -19,14 +21,17 @@ namespace StringCalculator
                 return CalculatorInstance;
             }
         }
+        #endregion
 
-        private const int returnval = 0;
+        #region Add Method
         public int Add(string inputNumbers)
         {
             try
             {
                 if (inputNumbers == string.Empty)
                     return returnval;
+                if (IsMultipleNumber(inputNumbers))
+                    return convertMultiplenumbers(inputNumbers, ',');
                 return Convert.ToInt32(inputNumbers);
             }
             catch (Exception ex)
@@ -35,5 +40,23 @@ namespace StringCalculator
             }
             
         }
+        #endregion
+
+        #region Methods
+        public bool IsMultipleNumber(string Number)
+        {
+            return Number.Contains(',');
+        }
+        private int convertMultiplenumbers(string Numbers, char Delimeter)
+        {
+            string[] splitNumbers = Numbers.Split(Delimeter);
+            int returnval = 0;
+            for (int i = 0; i < splitNumbers.Count(); i++)
+            {
+                returnval += Convert.ToInt32(splitNumbers[i]);
+            }
+            return returnval;
+        }
+        #endregion
     }
 }

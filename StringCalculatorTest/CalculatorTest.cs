@@ -29,6 +29,17 @@ namespace StringCalculatorTest
             checkAssertCalculator(inputstring, expected);
         }
 
+        /// <summary>
+        /// Below Test is for Testing multiple amount of numbers which return Sum of those numbers
+        /// </summary>
+        [TestMethod]
+        [DataRow("5,6", 11)]
+        [DataRow("10,1,5", 16)]
+        public void Calculator_WithOneOrMoreNumbersReturnSumOfNumners(string inputstring, int expected)
+        {
+            checkAssertCalculator(inputstring, expected);
+        }
+
         public void checkAssertCalculator(string inputstring, int expected)
         {
             var _objCalculator = StringCalculator.Calculator._CalculatorInstance; ;
