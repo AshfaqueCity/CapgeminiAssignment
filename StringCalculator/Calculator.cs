@@ -49,13 +49,15 @@ namespace StringCalculator
         }
         private int convertMultiplenumbers(string Numbers, char Delimeter)
         {
-            string[] splitNumbers = Numbers.Split(Delimeter);
-            int returnval = 0;
-            for (int i = 0; i < splitNumbers.Count(); i++)
+            try
             {
-                returnval += Convert.ToInt32(splitNumbers[i]);
+                return Numbers.Split(Delimeter).Select(c => int.Parse(c)).Sum();
             }
-            return returnval;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+           
         }
         #endregion
     }
