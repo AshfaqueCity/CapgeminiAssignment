@@ -10,7 +10,7 @@ namespace StringCalculator
     {
         #region Class Instance Members(Singleton)
         private const int returnval = 0;
-        private const string DefaultDelimeter = ",";
+        private const char DefaultDelimeter = ',';
         private static readonly Calculator _CalculatorInstance = new Calculator();
         private Calculator()
         { 
@@ -25,6 +25,11 @@ namespace StringCalculator
         #endregion
 
         #region Add Method
+        /// <summary>
+        /// Calculator Add Method which will take numbers string input and will return sum of numbers
+        /// </summary>
+        /// <param name="inputNumbers"></param>
+        /// <returns>sum of numbers</returns>
         public int Add(string inputNumbers)
         {
             try
@@ -38,6 +43,10 @@ namespace StringCalculator
 
                 return Convert.ToInt32(inputNumbers);
             }
+            catch (NotSupportedException ex)
+            {
+                throw ex;
+            }
             catch (Exception ex)
             {
                 throw ex;
@@ -46,19 +55,27 @@ namespace StringCalculator
         #endregion
 
         #region Methods
+        /// <summary>
+        /// This Method is to check weather string contain multiple numbers or not
+        /// </summary>
+        /// <param name="Number"></param>
+        /// <returns>boolean</returns>
         public bool IsMultipleNumber(string Number)
         {
             return Number.Contains(DefaultDelimeter) || Number.Contains('\n');
         }
+
+        /// <summary>
+        /// This Method will return sum of numbers passsed in the form of string
+        /// </summary>
+        /// <param name="Numbers"></param>
+        /// <returns>int</returns>
         private int convertMultiplenumbers(string Numbers)
         {
             try
             {
-                if (Numbers.Contains("//"))
-                    Numbers = Numbers.Replace("\\n", "\n").Substring(4).Replace("\n", DefaultDelimeter).Replace(Numbers.Substring(2, 1), DefaultDelimeter);
-                else
-                    Numbers = Numbers.Replace("\\n", "\n").Replace("\n", DefaultDelimeter);
-                return Numbers.Split(DefaultDelimeter.ToCharArray()[0]).Select(c => int.Parse(c)).Sum();
+                Numbers = ReplaceAllDelimeterswithDefaultDelimeter(Numbers);
+                return Numbers.Split(DefaultDelimeter).Select(c => int.Parse(c)).Sum();
             }
             catch (Exception ex)
             {
@@ -66,47 +83,59 @@ namespace StringCalculator
             }
            
         }
+
+        /// <summary>
+        /// Replace All Delimeters with Default Delimeter
+        /// </summary>
+        /// <param name="Numbers"></param>
+        /// <returns>string numbers with default delimeters</returns>
+        private static string ReplaceAllDelimeterswithDefaultDelimeter(string Numbers)
+        {
+            if (Numbers.Contains("//"))
+                Numbers = Numbers.Replace("\\n", "\n").Substring(4).Replace('\n', DefaultDelimeter).Replace(Numbers.Substring(2, 1).ToCharArray()[0], DefaultDelimeter);
+            else
+                Numbers = Numbers.Replace("\\n", "\n").Replace('\n', DefaultDelimeter);
+            return Numbers;
+        }
+
+        /// <summary>
+        /// This Method is to check weather string containing different delimeters
+        /// </summary>
+        /// <param name="Number"></param>
+        /// <returns>boolean</returns>
         public bool IsDifferentDelimeter(string Number)
         {
             return Number.StartsWith("//");
         }
+
+        /// <summary>
+        /// This method is used to message it find any negative numbers and give message of all negative numbers 
+        /// if more than one negative numbers are available.
+        /// </summary>
+        /// <param name="InputString"></param>
+        /// <returns>String message</returns>
         public static string HandleNegativeNumbers(string InputString)
         {
-            string[] Numbers = InputString.Split('-');
-            List<string> NegativeNumbers=new List<string>();
-            if (Numbers.Count() > 2)
+            try
             {
-                
-                string Negatives = "";
-                if (InputString.Contains("\n") || InputString.Contains(","))
+                string[] Numbers = InputString.Split('-');
+                List<string> NegativeNumbers = new List<string>();
+                if (Numbers.Count() > 2)
                 {
-                    NegativeNumbers = SplitNumbers(InputString.Replace("\\n", "\n").Replace('\n', ','), ",").ToList<string>();
+                    if (InputString.Contains("\n") || InputString.Contains(",") || InputString.Contains("//"))
+                    {
+                        NegativeNumbers = ReplaceAllDelimeterswithDefaultDelimeter(InputString).Split(DefaultDelimeter).ToList<string>();
+                    }
+                    var Negatives = String.Join(",", NegativeNumbers.Where(x => Convert.ToInt32(x) < 0).ToList());
+                    return string.Format("Can Not use negative numbers {0}", Negatives);
                 }
-                if (InputString.Contains("//"))
-                {
-                    NegativeNumbers = SplitNumbers(InputString.Substring(4), InputString.Substring(2, 1)).ToList<string>();
-                }
-                Negatives = GetNegativeNumbers(NegativeNumbers);
-                return string.Format("Can Not use negative numbers {0}", Negatives);
+                return "Can Not use negative numbers";
             }
-
-
-            return "Can Not use negative numbers";
-        }
-        public static string[] SplitNumbers(string InputNumbers, string Delimeter)
-        {
-            return InputNumbers.Split(Delimeter.ToCharArray()[0]);
-        }
-        public static string GetNegativeNumbers(List<string> InputList)
-        {
-            string output = "";
-            for (int i = 0; i < InputList.Count(); i++)
+            catch (Exception ex)
             {
-                if (InputList[i].Contains('-'))
-                    output += InputList[i] + ",";
+                throw ex;
             }
-            output = output.Substring(0, output.Length - 1);
-            return output;
+            
         }
         #endregion
     }

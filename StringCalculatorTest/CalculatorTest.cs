@@ -72,9 +72,8 @@ namespace StringCalculatorTest
         public void Calculator_CheckNegativeNumberAndThroughException()
         {
             var _objCalculator = StringCalculator.Calculator.CalculatorInstance;
-            var Result = _objCalculator.Add("-1");
+            var Result = _objCalculator.Add("-1,-9,8");
             Assert.AreEqual("Can Not use negative numbers", Result);
-            //Assert.ThrowsException<NotSupportedException>(() => Result);
         }
 
         public void checkAssertCalculator(string inputstring, int expected)
