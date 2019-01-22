@@ -10,9 +10,10 @@ namespace StringCalculator
     {
         static void Main(string[] args)
         {
+            var _objCalculator = Calculator.CalculatorInstance;
             try
             {
-                var _objCalculator =  Calculator.CalculatorInstance;
+                
                 Loop:
                 Console.WriteLine("Please Enter Any String Number To Get Sum");
                 string InputString = Console.ReadLine();
@@ -22,12 +23,16 @@ namespace StringCalculator
                 if (choice == "1")
                     goto Loop;
             }
+            catch (NotSupportedException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.Read();
+            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.Read();
             }
-           
         }
     }
 }

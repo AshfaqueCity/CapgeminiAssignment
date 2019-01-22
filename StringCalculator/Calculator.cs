@@ -31,6 +31,8 @@ namespace StringCalculator
             {
                 if (inputNumbers == string.Empty)
                     return returnval;
+                if (inputNumbers.Contains("-"))
+                    throw new NotSupportedException(HandleNegativeNumbers(inputNumbers));
                 if (IsDifferentDelimeter(inputNumbers) || IsMultipleNumber(inputNumbers))
                     return convertMultiplenumbers(inputNumbers);
 
@@ -46,7 +48,7 @@ namespace StringCalculator
         #region Methods
         public bool IsMultipleNumber(string Number)
         {
-            return Number.Contains(',') || Number.Contains('\n');
+            return Number.Contains(DefaultDelimeter) || Number.Contains('\n');
         }
         private int convertMultiplenumbers(string Numbers)
         {
@@ -67,6 +69,44 @@ namespace StringCalculator
         public bool IsDifferentDelimeter(string Number)
         {
             return Number.StartsWith("//");
+        }
+        public static string HandleNegativeNumbers(string InputString)
+        {
+            string[] Numbers = InputString.Split('-');
+            List<string> NegativeNumbers=new List<string>();
+            if (Numbers.Count() > 2)
+            {
+                
+                string Negatives = "";
+                if (InputString.Contains("\n") || InputString.Contains(","))
+                {
+                    NegativeNumbers = SplitNumbers(InputString.Replace("\\n", "\n").Replace('\n', ','), ",").ToList<string>();
+                }
+                if (InputString.Contains("//"))
+                {
+                    NegativeNumbers = SplitNumbers(InputString.Substring(4), InputString.Substring(2, 1)).ToList<string>();
+                }
+                Negatives = GetNegativeNumbers(NegativeNumbers);
+                return string.Format("Can Not use negative numbers {0}", Negatives);
+            }
+
+
+            return "Can Not use negative numbers";
+        }
+        public static string[] SplitNumbers(string InputNumbers, string Delimeter)
+        {
+            return InputNumbers.Split(Delimeter.ToCharArray()[0]);
+        }
+        public static string GetNegativeNumbers(List<string> InputList)
+        {
+            string output = "";
+            for (int i = 0; i < InputList.Count(); i++)
+            {
+                if (InputList[i].Contains('-'))
+                    output += InputList[i] + ",";
+            }
+            output = output.Substring(0, output.Length - 1);
+            return output;
         }
         #endregion
     }
