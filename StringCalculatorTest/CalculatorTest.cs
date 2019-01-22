@@ -40,6 +40,18 @@ namespace StringCalculatorTest
             checkAssertCalculator(inputstring, expected);
         }
 
+        /// <summary>
+        /// Below Test is for Testing new line between numbers which return Sum of numbers
+        /// </summary>
+        [TestMethod]
+        [DataRow("5,6", 11)]
+        [DataRow("10\n1,5", 16)]
+        //[DataRow("1,\n", 1)]
+        public void Calculator_WithNewLineAndNumbersReturnSumOfNumners(string inputstring, int expected)
+        {
+            checkAssertCalculator(inputstring, expected);
+        }
+
         public void checkAssertCalculator(string inputstring, int expected)
         {
             var _objCalculator = StringCalculator.Calculator._CalculatorInstance; ;

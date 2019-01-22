@@ -31,7 +31,7 @@ namespace StringCalculator
                 if (inputNumbers == string.Empty)
                     return returnval;
                 if (IsMultipleNumber(inputNumbers))
-                    return convertMultiplenumbers(inputNumbers, ',');
+                    return convertMultiplenumbers(inputNumbers.Replace("\\n", "\n").Replace('\n', ','), ",");
                 return Convert.ToInt32(inputNumbers);
             }
             catch (Exception ex)
@@ -45,13 +45,13 @@ namespace StringCalculator
         #region Methods
         public bool IsMultipleNumber(string Number)
         {
-            return Number.Contains(',');
+            return Number.Contains(',') || Number.Contains('\n');
         }
-        private int convertMultiplenumbers(string Numbers, char Delimeter)
+        private int convertMultiplenumbers(string Numbers, string Delimeter)
         {
             try
             {
-                return Numbers.Split(Delimeter).Select(c => int.Parse(c)).Sum();
+                return Numbers.Split(Delimeter.ToCharArray()[0]).Select(c => int.Parse(c)).Sum();
             }
             catch (Exception ex)
             {
