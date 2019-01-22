@@ -10,6 +10,7 @@ namespace StringCalculator
     {
         #region Class Instance Members(Singleton)
         private const int returnval = 0;
+        private const string DefaultDelimeter = ",";
         private static readonly Calculator CalculatorInstance = new Calculator();
         private Calculator()
         { 
@@ -30,15 +31,16 @@ namespace StringCalculator
             {
                 if (inputNumbers == string.Empty)
                     return returnval;
-                if (IsMultipleNumber(inputNumbers))
-                    return convertMultiplenumbers(inputNumbers.Replace("\\n", "\n").Replace('\n', ','), ",");
+                if (IsDifferentDelimeter(inputNumbers))
+                    return HandleDifferentDelimeters(inputNumbers);
+                if (IsMultipleNumber(inputNumbers)) 
+                    return convertMultiplenumbers(inputNumbers.Replace("\\n", "\n").Replace("\n", DefaultDelimeter), DefaultDelimeter);
                 return Convert.ToInt32(inputNumbers);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            
         }
         #endregion
 
@@ -58,6 +60,21 @@ namespace StringCalculator
                 throw ex;
             }
            
+        }
+        public bool IsDifferentDelimeter(string Number)
+        {
+            return Number.StartsWith("//");
+        }
+        public int HandleDifferentDelimeters(string InputNumbers)
+        {
+            try
+            {
+                return convertMultiplenumbers(InputNumbers.Replace("\\n", "\n").Substring(4).Replace("\n", DefaultDelimeter).Replace(InputNumbers.Substring(2, 1), DefaultDelimeter), DefaultDelimeter);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
     }

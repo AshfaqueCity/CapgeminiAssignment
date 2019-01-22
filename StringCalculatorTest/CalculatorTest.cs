@@ -44,7 +44,7 @@ namespace StringCalculatorTest
         /// Below Test is for Testing new line between numbers which return Sum of numbers
         /// </summary>
         [TestMethod]
-        [DataRow("5,6", 11)]
+        [DataRow("5\n6", 11)]
         [DataRow("10\n1,5", 16)]
         //[DataRow("1,\n", 1)]
         public void Calculator_WithNewLineAndNumbersReturnSumOfNumners(string inputstring, int expected)
@@ -52,9 +52,21 @@ namespace StringCalculatorTest
             checkAssertCalculator(inputstring, expected);
         }
 
+        /// <summary>
+        /// Below Test is for Testing to Support Different Delimiter which return Sum of numbers
+        /// </summary>
+        [TestMethod]
+        [DataRow("//;\n5;6", 11)]
+        [DataRow("//@\n10@1@5", 16)]
+        [DataRow("//#\n15#1#5\n58", 79)]
+        public void Calculator_WithDifferentDelimiterAndNumbersReturnSumOfNumners(string inputstring, int expected)
+        {
+            checkAssertCalculator(inputstring, expected);
+        }
+
         public void checkAssertCalculator(string inputstring, int expected)
         {
-            var _objCalculator = StringCalculator.Calculator._CalculatorInstance; ;
+            var _objCalculator = StringCalculator.Calculator._CalculatorInstance;
             var Result = _objCalculator.Add(inputstring);
             Assert.AreEqual(expected, Result);
         }
