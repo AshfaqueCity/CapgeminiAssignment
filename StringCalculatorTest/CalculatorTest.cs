@@ -66,7 +66,7 @@ namespace StringCalculatorTest
 
         public void checkAssertCalculator(string inputstring, int expected)
         {
-            var _objCalculator = StringCalculator.Calculator._CalculatorInstance;
+            var _objCalculator = StringCalculator.Calculator.CalculatorInstance;
             var Result = _objCalculator.Add(inputstring);
             Assert.AreEqual(expected, Result);
         }

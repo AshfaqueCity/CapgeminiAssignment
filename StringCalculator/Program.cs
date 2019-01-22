@@ -12,7 +12,7 @@ namespace StringCalculator
         {
             try
             {
-                var _objCalculator =  Calculator._CalculatorInstance;
+                var _objCalculator =  Calculator.CalculatorInstance;
                 Loop:
                 Console.WriteLine("Please Enter Any String Number To Get Sum");
                 string InputString = Console.ReadLine();

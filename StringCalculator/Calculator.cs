@@ -11,15 +11,15 @@ namespace StringCalculator
         #region Class Instance Members(Singleton)
         private const int returnval = 0;
         private const string DefaultDelimeter = ",";
-        private static readonly Calculator CalculatorInstance = new Calculator();
+        private static readonly Calculator _CalculatorInstance = new Calculator();
         private Calculator()
         { 
         }
-        public static Calculator _CalculatorInstance
+        public static Calculator CalculatorInstance
         {
             get 
             {
-                return CalculatorInstance;
+                return _CalculatorInstance;
             }
         }
         #endregion
@@ -31,10 +31,9 @@ namespace StringCalculator
             {
                 if (inputNumbers == string.Empty)
                     return returnval;
-                if (IsDifferentDelimeter(inputNumbers))
-                    return HandleDifferentDelimeters(inputNumbers);
-                if (IsMultipleNumber(inputNumbers)) 
-                    return convertMultiplenumbers(inputNumbers.Replace("\\n", "\n").Replace("\n", DefaultDelimeter), DefaultDelimeter);
+                if (IsDifferentDelimeter(inputNumbers) || IsMultipleNumber(inputNumbers))
+                    return convertMultiplenumbers(inputNumbers);
+
                 return Convert.ToInt32(inputNumbers);
             }
             catch (Exception ex)
@@ -49,11 +48,15 @@ namespace StringCalculator
         {
             return Number.Contains(',') || Number.Contains('\n');
         }
-        private int convertMultiplenumbers(string Numbers, string Delimeter)
+        private int convertMultiplenumbers(string Numbers)
         {
             try
             {
-                return Numbers.Split(Delimeter.ToCharArray()[0]).Select(c => int.Parse(c)).Sum();
+                if (Numbers.Contains("//"))
+                    Numbers = Numbers.Replace("\\n", "\n").Substring(4).Replace("\n", DefaultDelimeter).Replace(Numbers.Substring(2, 1), DefaultDelimeter);
+                else
+                    Numbers = Numbers.Replace("\\n", "\n").Replace("\n", DefaultDelimeter);
+                return Numbers.Split(DefaultDelimeter.ToCharArray()[0]).Select(c => int.Parse(c)).Sum();
             }
             catch (Exception ex)
             {
@@ -64,17 +67,6 @@ namespace StringCalculator
         public bool IsDifferentDelimeter(string Number)
         {
             return Number.StartsWith("//");
-        }
-        public int HandleDifferentDelimeters(string InputNumbers)
-        {
-            try
-            {
-                return convertMultiplenumbers(InputNumbers.Replace("\\n", "\n").Substring(4).Replace("\n", DefaultDelimeter).Replace(InputNumbers.Substring(2, 1), DefaultDelimeter), DefaultDelimeter);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
         #endregion
     }
