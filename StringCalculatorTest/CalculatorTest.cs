@@ -64,16 +64,23 @@ namespace StringCalculatorTest
             checkAssertCalculator(inputstring, expected);
         }
 
-        /// <summary>
+       /// <summary>
         /// Below Test is to check Negative no and through exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NotSupportedException), "Can Not use negative numbers")]
-        public void Calculator_CheckNegativeNumberAndThroughException()
+        [DataRow("-5,7", "Can Not use negative numbers -5")]
+        [DataRow("-5,-77,8", "Can Not use negative numbers -5")]
+        public void Calculator_CheckNegativeNumberAndThroughException(string inputstring, string expected)
         {
-            var _objCalculator = StringCalculator.Calculator.CalculatorInstance;
-            var Result = _objCalculator.Add("-1,-9,8");
-            Assert.AreEqual("Can Not use negative numbers", Result);
+            try
+            {
+                var _objCalculator = StringCalculator.Calculator.CalculatorInstance;
+                _objCalculator.Add(inputstring);
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains(expected));
+            }
         }
 
         public void checkAssertCalculator(string inputstring, int expected)
