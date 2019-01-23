@@ -69,7 +69,7 @@ namespace StringCalculatorTest
         /// </summary>
         [TestMethod]
         [DataRow("-5,7", "Can Not use negative numbers -5")]
-        [DataRow("-5,-77,8", "Can Not use negative numbers -5")]
+        [DataRow("-6,-77,8", "Can Not use negative numbers -6,-77")]
         public void Calculator_CheckNegativeNumberAndThroughException(string inputstring, string expected)
         {
             try
@@ -79,7 +79,7 @@ namespace StringCalculatorTest
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex.Message.Contains(expected));
+                Assert.IsTrue(ex.Message.Equals(expected));
             }
         }
 
