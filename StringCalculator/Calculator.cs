@@ -124,18 +124,13 @@ namespace StringCalculator
         {
             try
             {
-                string[] Numbers = InputString.Split('-');
                 List<string> NegativeNumbers = new List<string>();
-                if (Numbers.Count() > 2)
+                if (IsMultipleNumber(InputString) || IsDifferentDelimeter(InputString))
                 {
-                    if (IsMultipleNumber(InputString) || IsDifferentDelimeter(InputString))
-                    {
-                        NegativeNumbers = ReplaceAllDelimeterswithDefaultDelimeter(InputString).Split(DefaultDelimeter).ToList<string>();
-                    }
-                    var Negatives = String.Join(",", NegativeNumbers.Where(x => Convert.ToInt32(x) < 0).ToList());
-                    return string.Format("Can Not use negative numbers {0}", Negatives);
+                    NegativeNumbers = ReplaceAllDelimeterswithDefaultDelimeter(InputString).Split(DefaultDelimeter).ToList<string>();
                 }
-                return "Can Not use negative numbers";
+                var Negatives = String.Join(",", NegativeNumbers.Where(x => Convert.ToInt32(x) < 0).ToList());
+                return string.Format("Can Not use negative numbers {0}", Negatives);
             }
             catch (Exception ex)
             {
