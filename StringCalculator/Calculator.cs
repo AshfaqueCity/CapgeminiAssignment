@@ -60,7 +60,7 @@ namespace StringCalculator
         /// </summary>
         /// <param name="Number"></param>
         /// <returns>boolean</returns>
-        public bool IsMultipleNumber(string Number)
+        public static bool IsMultipleNumber(string Number)
         {
             return Number.Contains(DefaultDelimeter) || Number.Contains('\n');
         }
@@ -81,7 +81,6 @@ namespace StringCalculator
             {
                 throw ex;
             }
-           
         }
 
         /// <summary>
@@ -91,11 +90,18 @@ namespace StringCalculator
         /// <returns>string numbers with default delimeters</returns>
         private static string ReplaceAllDelimeterswithDefaultDelimeter(string Numbers)
         {
-            if (Numbers.Contains("//"))
-                Numbers = Numbers.Replace("\\n", "\n").Substring(4).Replace('\n', DefaultDelimeter).Replace(Numbers.Substring(2, 1).ToCharArray()[0], DefaultDelimeter);
-            else
-                Numbers = Numbers.Replace("\\n", "\n").Replace('\n', DefaultDelimeter);
-            return Numbers;
+            try
+            {
+                if (IsDifferentDelimeter(Numbers))
+                    Numbers = Numbers.Replace("\\n", "\n").Substring(4).Replace('\n', DefaultDelimeter).Replace(Numbers.Substring(2, 1).ToCharArray()[0], DefaultDelimeter);
+                else
+                    Numbers = Numbers.Replace("\\n", "\n").Replace('\n', DefaultDelimeter);
+                return Numbers;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -103,7 +109,7 @@ namespace StringCalculator
         /// </summary>
         /// <param name="Number"></param>
         /// <returns>boolean</returns>
-        public bool IsDifferentDelimeter(string Number)
+        public static bool IsDifferentDelimeter(string Number)
         {
             return Number.StartsWith("//");
         }
@@ -122,7 +128,7 @@ namespace StringCalculator
                 List<string> NegativeNumbers = new List<string>();
                 if (Numbers.Count() > 2)
                 {
-                    if (InputString.Contains("\n") || InputString.Contains(",") || InputString.Contains("//"))
+                    if (IsMultipleNumber(InputString) || IsDifferentDelimeter(InputString))
                     {
                         NegativeNumbers = ReplaceAllDelimeterswithDefaultDelimeter(InputString).Split(DefaultDelimeter).ToList<string>();
                     }
@@ -135,7 +141,6 @@ namespace StringCalculator
             {
                 throw ex;
             }
-            
         }
         #endregion
     }
